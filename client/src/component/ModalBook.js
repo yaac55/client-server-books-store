@@ -1,13 +1,12 @@
 import React, { useState} from 'react';
 import {Button,Modal,Form} from 'react-bootstrap';
 import{swalConfirm} from '../services/functions';
-import {typeOfBooks} from '../services/constante';
 import {create_book,update_book} from '../services/request/bookRequest';
 
 
 function ModalBook(props) {
 
-    
+    const typeOfBooks = ["adult","kids","suspens","historic","love","fiction"];
     const book = props.book;
     const [state , setState] = useState({
         id : book ? book._id : "",
@@ -16,6 +15,7 @@ function ModalBook(props) {
         year_publication : book ? book.year_publication : "",
         price : book ? book.price : "",
         type : book ? book.type : "",
+        description: book ? book.description : ""
     });
       
     const handleChange = (e) => {
@@ -27,37 +27,56 @@ function ModalBook(props) {
     }
 
     const addNewBook = async() => {
-        const result = await swalConfirm('Are you sure you want to add a new book ?',
-        'warning');
-        if(result.isConfirmed)
+        if(state.author === "" || state.title === "" || state.description === "" ||
+        state.year_publication === "" || state.price === "" || state.type === "" )
         {
-          await create_book(state);
-          props.handleClose();
-        //   setState(prevState => ({
-        //     ...prevState,
-        //     account_number: "",
-        //     amount: "",
-        //     name_product: "",
-        //     note: ""
-        //   }))
+            await swalConfirm('You must to fill all the field !','warning',false);
         }
         else
         {
-          return false;
+            const confirmAdd = await swalConfirm('Are you sure you want to add a new book ?',
+            'warning',true);
+            if(confirmAdd.isConfirmed)
+            {
+            await create_book(state);
+            props.handleClose();
+            setState(prevState => ({
+                ...prevState,
+                id : "",
+                author : "",
+                title : "",
+                year_publication : "",
+                price : "",
+                type : "",
+                description: ""
+            }))
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 
     const updateBook = async() => {
-        const result = await swalConfirm('Are you sure you want to update a book ?',
-        'warning');
-        if(result.isConfirmed)
+        if(state.author === "" || state.title === "" || state.description === "" ||
+        state.year_publication === "" || state.price === "" || state.type === "" )
         {
-          await update_book(state);
-          props.handleClose();
+            await swalConfirm('You must to fill all the field !','warning',false);
         }
         else
         {
-          return false;
+            const confirmUpdate = await swalConfirm('Are you sure you want to update a book ?',
+            'warning',true);
+            if(confirmUpdate.isConfirmed)
+            {
+            await update_book(state);
+            props.handleClose();
+            }
+            else
+            {
+                return false;
+            }
         }
     }
  
@@ -78,6 +97,11 @@ function ModalBook(props) {
                 <Form.Label>Title</Form.Label>
                 <Form.Control value={state.title} type="text" 
                 id="title" onChange={handleChange}/>
+            </Form.Group>
+            <Form.Group>
+                <Form.Label>Description</Form.Label>
+                <Form.Control value={state.description} type="text" 
+                id="description" onChange={handleChange}/>
             </Form.Group>
             <Form.Group>
                 <Form.Label>Year of Publication</Form.Label>
@@ -111,12 +135,12 @@ function ModalBook(props) {
             </Form>
             </Modal.Body>
             <Modal.Footer>
-            <Button variant="secondary" onClick={()=>props.handleClose()}>
-                Close
-            </Button>
-            <Button variant="primary" onClick={ book ? updateBook : addNewBook }>
-                {book ? "Update Book" : "Add Book"}
-            </Button>
+                <Button variant="secondary" onClick={()=>props.handleClose()}>
+                    Close
+                </Button>
+                <Button variant="primary" onClick={ book ? updateBook : addNewBook }>
+                    {book ? "Update Book" : "Add Book"}
+                </Button>
             </Modal.Footer>
         </Modal>
     );

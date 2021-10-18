@@ -1,3 +1,5 @@
+//All function of Book for Crud 
+
 const {Book} = require('../models/book');
 
 exports.create_book = (req, res) =>{

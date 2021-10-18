@@ -1,8 +1,7 @@
 import React, { useState,useEffect} from 'react';
-import Book from './Book';
+import Book from './Book/Book';
 import {get_books} from '../services/request/bookRequest';
 import {Button,Container, Row,Col} from 'react-bootstrap';
-import{swalConfirm} from '../services/functions';
 import ModalBook from './ModalBook';
 
 function ManageBooks() {
@@ -28,14 +27,14 @@ function ManageBooks() {
         Add Book
       </Button>{' '}
       <Button variant="success" size="xs" >
-        Search book by name
+        Filter Book
       </Button>{' '}
       <hr />
       <Row>
         {books.map((book,index)=>{
           return(
-            <Col>
-            <Book key={index} book={book} show={show} setBooks={setBooks} ></Book>
+            <Col  key={index} xs={4}>
+              <Book book={book} show={show} setBooks={setBooks} ></Book>
             </Col>
           )
         })}

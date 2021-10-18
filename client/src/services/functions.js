@@ -1,15 +1,15 @@
 import Swal from 'sweetalert2';
 
 //function  before confirm choice
-export const swalConfirm = async (title,icon) => {
+export const swalConfirm = async (title,icon,showCancelButton) => {
     const result = await Swal.fire({
         title: title,
         icon: icon,
         showCloseButton: false,
-        showCancelButton: true,
+        showCancelButton: showCancelButton,
         focusConfirm: false,
-        confirmButtonText:"Yes",
-        cancelButtonText:'No'
+        confirmButtonText:"OK",
+        cancelButtonText:'Cancel'
     }) 
     return result;  
 }
