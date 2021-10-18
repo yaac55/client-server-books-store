@@ -1,4 +1,4 @@
-//functions for crud in client side
+//functions to send requests to server 
 
 import axios from 'axios';
 import {API_BASE_URL} from '../constante';
@@ -30,4 +30,10 @@ export const update_book = async (book) =>{
     const payload = book;
     let response = await axios.put(API_BASE_URL+'/book/'+id, payload)
     return response;
+}
+
+export const book_filter = async (filter) =>{ 
+    const payload = filter;
+    let response = await axios.get(API_BASE_URL+'/book/filter',payload)
+    return response.data;
 }

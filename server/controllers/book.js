@@ -47,3 +47,39 @@ exports.delete_book = (req, res) =>{
       res.status(200).send("delete successfully")})
     .catch(error => res.status(400).json({ error }));
 }
+
+exports.filter_book = (req, res) =>{
+  
+  const body = req.body;
+
+  let query = {
+    '$and': []
+  };
+
+  let yearQuery = [];
+
+  if(body.low > 0 && body.high > 0 && body.year > 0) 
+  {
+      yearQuery.push({ 'year_publication': { $gte: body.low, $lte: body.high } });
+      yearQuery.push({ 'year_publication': { $gte: body.year} });
+      query['$and'].push({ '$or': yearQuery });
+  }
+  else if(body.low > 0 && body.high > 0)
+  {
+    query['$and'].push({ 'year_publication': { $gte: body.low, $lte: body.high } });
+    
+  }
+  else
+  {
+    query['$and'].push({ 'year_publication': { $gte: body.year} });
+  }
+
+  if(body.type != "")
+    query['$and'].push({ 'type': body.type});
+
+  Book.find(query)
+    .then(books =>{
+      res.status(200).send(books)})
+    .catch(error => res.status(404).json({ error}));
+  
+}

@@ -84,7 +84,7 @@ function ModalBook(props) {
     return(
         <Modal show={props.show} onHide={()=>props.handleClose()} animation={false}>
             <Modal.Header closeButton>
-            <Modal.Title>Add Book</Modal.Title>
+            <Modal.Title>{book ? "Update Book" : "Add Book"}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
             <Form>
@@ -113,25 +113,26 @@ function ModalBook(props) {
                 <Form.Control  value={state.price} type="number" 
                 id="price" onChange={handleChange}/>
             </Form.Group>
-            <Form.Control id="type" as="select" onChange={handleChange}>
-                <option>{(book && book.type) ? book.type : "Open this select menu"}</option>
-                {typeOfBooks.map((type,index)=>{
-                    
-                    if(book && book.type)
-                    {
-                        if(book.type !== type)
-                        return(
-                            <option key={index} value={type}>{type}</option>
-                        )
-                    }
-                    else
-                    {
-                        return(
-                            <option key={index} value={type}>{type}</option>
-                        )
-                    }
-                })}
-            </Form.Control>
+                <Form.Label>Type</Form.Label>
+                <Form.Control id="type" as="select" onChange={handleChange}>
+                    <option>{(book && book.type) ? book.type : "Open this select menu"}</option>
+                    {typeOfBooks.map((type,index)=>{
+                        
+                        if(book && book.type)
+                        {
+                            if(book.type !== type)
+                            return(
+                                <option key={index} value={type}>{type}</option>
+                            )
+                        }
+                        else
+                        {
+                            return(
+                                <option key={index} value={type}>{type}</option>
+                            )
+                        }
+                    })}
+                </Form.Control>
             </Form>
             </Modal.Body>
             <Modal.Footer>
