@@ -58,20 +58,20 @@ exports.filter_book = (req, res) =>{
 
   let yearQuery = [];
 
-  if(body.low > 0 && body.high > 0 && body.year > 0) 
+  if(body.year_low  && body.year_high  && body.year_publication ) 
   {
-      yearQuery.push({ 'year_publication': { $gte: body.low, $lte: body.high } });
-      yearQuery.push({ 'year_publication': { $gte: body.year} });
+      yearQuery.push({ 'year_publication': { $gte: body.year_low, $lte: body.year_high } });
+      yearQuery.push({ 'year_publication': { $gte: body.year_publication} });
       query['$and'].push({ '$or': yearQuery });
   }
-  else if(body.low > 0 && body.high > 0)
+  else if(body.year_low && body.year_high )
   {
-    query['$and'].push({ 'year_publication': { $gte: body.low, $lte: body.high } });
+    query['$and'].push({ 'year_publication': { $gte: body.year_low, $lte: body.year_high } });
     
   }
   else
   {
-    query['$and'].push({ 'year_publication': { $gte: body.year} });
+    query['$and'].push({ 'year_publication': { $gte: body.year_publication} });
   }
 
   if(body.type != "")

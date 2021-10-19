@@ -34,6 +34,6 @@ export const update_book = async (book) =>{
 
 export const book_filter = async (filter) =>{ 
     const payload = filter;
-    let response = await axios.get(API_BASE_URL+'/book/filter',payload)
+    let response = await axios.post(API_BASE_URL+'/book/filter',payload)
     return response.data;
 }
