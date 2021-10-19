@@ -66,12 +66,12 @@ exports.filter_book = (req, res) =>{
   }
   else if(body.year_low && body.year_high )
   {
-    query['$and'].push({ 'year_publication': { $gte: body.year_low, $lte: body.year_high } });
-    
+    query['$and'].push({ 'year_publication': { $gte: body.year_low, $lte: body.year_high } }); 
   }
   else
   {
-    query['$and'].push({ 'year_publication': { $gte: body.year_publication} });
+    if(body.year_publication)
+      query['$and'].push({ 'year_publication': { $gte: body.year_publication} });
   }
 
   if(body.type != "")

@@ -10,7 +10,6 @@ import './Book.css';
 function Book(props) {
 
   const [show, setShow] = useState(false);
-  const [isDelete, setIsDelete] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [showInfo, setShowInfo] = useState(false);
