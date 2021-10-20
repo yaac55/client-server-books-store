@@ -13,6 +13,7 @@ function ManageBooks() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [showOverlay, setShowOverlay] = useState(false);
+  
 
   useEffect(() => {
       fetchBooks();
@@ -77,8 +78,16 @@ function ManageBooks() {
                 </Form.Control>
               </Form.Group>
           </Form.Row>
-          <Form.Row className="d-flex justify-content-center">
-              <Form.Group>
+          <Form.Row >
+              <Form.Group as={Col} className="ml-2">
+                <Button variant="info"  onClick={() =>{
+                  fetchBooks();
+                  setShowOverlay(false);
+                }}>
+                  Refresh
+                </Button>
+              </Form.Group>
+              <Form.Group as={Col}>
                 <Button variant="info"  onClick={async () =>{
                   const books = await book_filter(filter);
                   setBooks(books);
@@ -106,7 +115,13 @@ function ManageBooks() {
         Add Book
       </Button>{' '}
       <OverlayTrigger show={showOverlay} overlay={popover} placement="right">
-           <Button variant="success"  onClick={() => setShowOverlay(true)}>
+           <Button variant="success"  onClick={() =>{
+            if(showOverlay)
+              setShowOverlay(false);
+            else  
+              setShowOverlay(true);
+            
+           }}>
               Filter Book
             </Button>
       </OverlayTrigger>
