@@ -14,7 +14,7 @@ The server run on port 4000.
 To start the project run in terminal
 ```
 npm install
-node start
+npm start
 ```
 
 ## Client app
@@ -27,3 +27,4 @@ To start the project run in terminal
 npm install
 npm start
 ```
+
