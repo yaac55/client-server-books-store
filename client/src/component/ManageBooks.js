@@ -1,4 +1,4 @@
-import React, { useState,useEffect} from 'react';
+import React, { useState,useEffect,useCallback} from 'react';
 import Book from './Book/Book';
 import {get_books,book_filter} from '../services/request/bookRequest';
 import {Button,Container, Row,Col,Popover,
@@ -10,8 +10,10 @@ function ManageBooks() {
 
   const [books,setBooks] = useState([]);
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const toogleShow = useCallback(() => {
+    setShow(!show)},
+    []
+  );
   const [showOverlay, setShowOverlay] = useState(false);
   
 
@@ -111,10 +113,10 @@ function ManageBooks() {
 
   return (
     <Container>
-      <Button variant="success" size="xs" onClick={()=>handleShow()}>
+      <Button variant="success" size="xs" onClick={()=>toogleShow()}>
         Add Book
       </Button>{' '}
-      <OverlayTrigger show={showOverlay} overlay={popover} placement="right">
+      <OverlayTrigger show={showOverlay} overlay={popover} trigger='click' rootClose placement="right">
            <Button variant="success"  onClick={() =>{
             if(showOverlay)
               setShowOverlay(false);
@@ -136,7 +138,7 @@ function ManageBooks() {
           )
         })}
       </Row>
-      <ModalBook show={show} handleClose={handleClose} fetchBooks={fetchBooks} ></ModalBook>
+      <ModalBook show={show} toogleShow={toogleShow} fetchBooks={fetchBooks} ></ModalBook>
     </Container>
   );
 }

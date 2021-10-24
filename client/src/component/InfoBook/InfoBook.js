@@ -5,10 +5,10 @@ import { get_book } from "../../services/request/bookRequest"
 import './InfoBook.css';
 
 
-function InfoBook(props) {
+const InfoBook = ({ show, id , toogleShowInfo }) => {
 
     const [book, setBook] = useState({});
-    const { show, id } = props;
+  
     
     useEffect(() => {
         if (show) {
@@ -22,7 +22,7 @@ function InfoBook(props) {
     }
 
     return (
-        <Modal show={props.show} onHide={() => props.handleClose()} animation={false}>
+        <Modal show={show} onHide={() => toogleShowInfo()} animation={false}>
             <Modal.Header closeButton>
                 <Modal.Title>{book.title}</Modal.Title>
             </Modal.Header>

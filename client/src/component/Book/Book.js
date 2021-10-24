@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Button, Card, Row, Col } from 'react-bootstrap';
 import { swalConfirm } from '../../services/functions';
 import { delete_book, get_books } from '../../services/request/bookRequest';
@@ -7,15 +7,20 @@ import InfoBook from './../InfoBook/InfoBook';
 import './Book.css';
 
 
-function Book(props) {
+const Book = ({ book,fetchBooks }) => {
 
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   const [showInfo, setShowInfo] = useState(false);
-  const handleCloseInfo = () => setShowInfo(false);
-  const handleShowInfo = () => setShowInfo(true);
-  const book = props.book;
+  const toogleShow = useCallback(() => {
+    setShow(!show)},
+    []
+  );
+
+  const toogleShowInfo = useCallback(() => {
+      setShowInfo(!showInfo)},
+      []
+    );
+
 
 
   const deleteBook = async () => {
@@ -23,7 +28,7 @@ function Book(props) {
       'warning', true);
     if (result.isConfirmed) {
       await delete_book(book._id);
-      await props.fetchBooks();
+      await fetchBooks();
     }
     else {
       return false;
@@ -32,9 +37,9 @@ function Book(props) {
 
   return (
     <div className="mb-4">
-      <Card className="card">
-        <Card.Body>
-          <Card.Title>{book.title} ({book.year_publication})</Card.Title>
+      <div className="card">
+        <div className="card-body">
+          <div className="card-title">{book.title} ({book.year_publication})</div>
           <Card.Subtitle className="mb-2 text-muted">{book.author}</Card.Subtitle>
           <Card.Text>
             {book.description}
@@ -45,19 +50,19 @@ function Book(props) {
           </Card.Text>
           <Row>
             <Col xs={3}>
-              <Button variant="info" onClick={() => handleShowInfo()}>Info</Button>
+              <Button variant="info" onClick={() => toogleShowInfo()}>Info</Button>
             </Col>
             <Col xs={4}>
-              <Button variant="warning" onClick={() => handleShow()}>Update</Button>
+              <Button variant="warning" onClick={() => toogleShow()}>Update</Button>
             </Col>
             <Col xs={4}>
               <Button variant="danger" onClick={deleteBook}>Delete</Button>
             </Col>
           </Row>
-        </Card.Body>
-      </Card>
-      <ModalBook book={props.book} show={show} handleClose={handleClose} fetchBooks={props.fetchBooks} ></ModalBook>
-      <InfoBook id={props.book._id} show={showInfo} handleClose={handleCloseInfo}></InfoBook>
+        </div>
+      </div>
+      <ModalBook book={book} show={show} toogleShow={toogleShow} fetchBooks={fetchBooks} ></ModalBook>
+      <InfoBook id={book._id} show={showInfo} toogleShowInfo={toogleShowInfo}></InfoBook>
     </div>
   );
 

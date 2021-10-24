@@ -6,9 +6,7 @@ import { swalConfirm } from '../services/functions';
 import { create_book, update_book } from '../services/request/bookRequest';
 import { typeOfBooks } from '../services/constante';
 
-function ModalBook(props) {
-
-    const book = props.book;
+const ModalBook = ({ book,show,fetchBooks,toogleShow}) => {
 
     const [state, setState] = useState({
         id: book ? book._id : "",
@@ -38,8 +36,8 @@ function ModalBook(props) {
                 'warning', true);
             if (confirmAdd.isConfirmed) {
                 await create_book(state);
-                await props.fetchBooks();
-                props.handleClose();
+                await fetchBooks();
+                toogleShow();
                 setState(prevState => ({
                     ...prevState,
                     id: "",
@@ -67,8 +65,8 @@ function ModalBook(props) {
                 'warning', true);
             if (confirmUpdate.isConfirmed) {
                 await update_book(state);
-                await props.fetchBooks();
-                props.handleClose();
+                await fetchBooks();
+                toogleShow();
             }
             else {
                 return false;
@@ -78,7 +76,7 @@ function ModalBook(props) {
 
 
     return (
-        <Modal show={props.show} onHide={() => props.handleClose()} animation={false}>
+        <Modal show={show} onHide={() => toogleShow()} animation={false}>
             <Modal.Header closeButton>
                 <Modal.Title>{book ? "Update Book" : "Add Book"}</Modal.Title>
             </Modal.Header>
@@ -130,7 +128,7 @@ function ModalBook(props) {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={() => props.handleClose()}>
+                <Button variant="secondary" onClick={() => toogleShow()}>
                     Close
                 </Button>
                 <Button variant="primary" onClick={book ? updateBook : addNewBook}>
